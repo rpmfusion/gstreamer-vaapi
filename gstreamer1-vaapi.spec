@@ -1,13 +1,13 @@
 Name:           gstreamer1-vaapi
 Version:        0.5.8
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        GStreamer plugins to use VA API video acceleration
 
 License:        LGPLv2+
 URL:            https://gitorious.org/vaapi/gstreamer-vaapi/
 Source0:        http://www.freedesktop.org/software/vaapi/releases/gstreamer-vaapi/gstreamer-vaapi-%{version}.tar.bz2
 # Fix for https://bugzilla.gnome.org/show_bug.cgi?id=723834
-Patch1:         0001-vaapipostproc-Create-filter-surface-pool-if-it-does-.patch
+Patch0:         0001-vaapipostproc-Create-filter-surface-pool-if-it-does-.patch
 
 BuildRequires:  glib2-devel >= 2.28
 BuildRequires:  gstreamer1-devel >= 1.0.0
@@ -76,6 +76,9 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 %{_libdir}/pkgconfig/gstreamer-vaapi*.pc
 
 %changelog
+* Fri Feb  7 2014 Simon Farnsworth <simon@farnz.org.uk> - 0.5.8-3
+- Fix typo in spec file - Patch1 and %patch0 don't go together
+
 * Fri Feb  7 2014 Simon Farnsworth <simon@farnz.org.uk> - 0.5.8-2
 - Fix vaapipostproc crash in live pipelines
 
