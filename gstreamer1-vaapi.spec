@@ -1,6 +1,6 @@
 Name:           gstreamer1-vaapi
 Version:        0.5.8
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        GStreamer plugins to use VA API video acceleration
 
 License:        LGPLv2+
@@ -17,6 +17,12 @@ BuildRequires:  libva-devel >= 1.1.0
 BuildRequires:  libdrm-devel
 BuildRequires:  libudev-devel
 BuildRequires:  libGL-devel
+%{!?_without_wayland:
+BuildRequires:  wayland-devel
+BuildRequires:  pkgconfig(wayland-client) >= 1
+BuildRequires:  pkgconfig(wayland-scanner) >= 1
+BuildRequires:  pkgconfig(wayland-server) >= 1
+}
 
 %description
 
@@ -46,7 +52,10 @@ chmod -x ./tests/test-filter.c ./gst-libs/gst/vaapi/gstvaapifilter.c ./gst-libs/
 
 # Wayland support in libva isn't present - gstreamer-vaapi can't support Wayland without it
 # https://bugzilla.redhat.com/show_bug.cgi?id=1051862
-%configure --enable-static=no --disable-wayland
+%configure \
+           --enable-static=no \
+           %{?_without_wayland:--disable-wayland}
+
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
@@ -76,6 +85,9 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 %{_libdir}/pkgconfig/gstreamer-vaapi*.pc
 
 %changelog
+* Wed Apr  9 2014 Simon Farnsworth <simon.farnsworth@onelan.co.uk> - 0.5.8-4
+- Provide Wayland support now that libva includes it
+
 * Fri Feb  7 2014 Simon Farnsworth <simon@farnz.org.uk> - 0.5.8-3
 - Fix typo in spec file - Patch1 and %patch0 don't go together
 
