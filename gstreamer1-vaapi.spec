@@ -1,6 +1,6 @@
 Name:           gstreamer1-vaapi
 Version:        0.5.8
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        GStreamer plugins to use VA API video acceleration
 
 License:        LGPLv2+
@@ -85,6 +85,9 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 %{_libdir}/pkgconfig/gstreamer-vaapi*.pc
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.5.8-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Wed Apr  9 2014 Simon Farnsworth <simon.farnsworth@onelan.co.uk> - 0.5.8-4
 - Provide Wayland support now that libva includes it
 
