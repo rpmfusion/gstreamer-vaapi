@@ -1,13 +1,11 @@
 Name:           gstreamer1-vaapi
-Version:        0.5.8
-Release:        5%{?dist}
+Version:        0.5.9
+Release:        1%{?dist}
 Summary:        GStreamer plugins to use VA API video acceleration
 
 License:        LGPLv2+
 URL:            https://gitorious.org/vaapi/gstreamer-vaapi/
 Source0:        http://www.freedesktop.org/software/vaapi/releases/gstreamer-vaapi/gstreamer-vaapi-%{version}.tar.bz2
-# Fix for https://bugzilla.gnome.org/show_bug.cgi?id=723834
-Patch0:         0001-vaapipostproc-Create-filter-surface-pool-if-it-does-.patch
 
 BuildRequires:  glib2-devel >= 2.28
 BuildRequires:  gstreamer1-devel >= 1.0.0
@@ -23,6 +21,7 @@ BuildRequires:  pkgconfig(wayland-client) >= 1
 BuildRequires:  pkgconfig(wayland-scanner) >= 1
 BuildRequires:  pkgconfig(wayland-server) >= 1
 }
+BuildRequires:  libvpx-devel
 
 %description
 
@@ -43,7 +42,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q -n gstreamer-vaapi-%{version}
-%patch0 -p1
 
 %build
 
@@ -54,7 +52,8 @@ chmod -x ./tests/test-filter.c ./gst-libs/gst/vaapi/gstvaapifilter.c ./gst-libs/
 # https://bugzilla.redhat.com/show_bug.cgi?id=1051862
 %configure \
            --enable-static=no \
-           %{?_without_wayland:--disable-wayland}
+           %{?_without_wayland:--disable-wayland} \
+           --disable-builtin-libvpx
 
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
@@ -80,11 +79,14 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 %files devel
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING.LIB NEWS README
-%{_includedir}/gstreamer-1.2/gst/vaapi
+%{_includedir}/gstreamer-1.0/gst/vaapi
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/gstreamer-vaapi*.pc
 
 %changelog
+* Fri Aug  1 2014 Simon Farnsworth <simon.farnsworth@onelan.co.uk> - 0.5.9-1
+- Update to 0.5.9 release
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.5.8-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
