@@ -15,13 +15,15 @@ BuildRequires:  libva-devel >= 1.1.0
 BuildRequires:  libdrm-devel
 BuildRequires:  libudev-devel
 BuildRequires:  libGL-devel
-%{!?_without_wayland:
+BuildRequires:  libvpx-devel
+
+%if 0%{?fedora} || 0%{?rhel} >= 8
 BuildRequires:  wayland-devel
 BuildRequires:  pkgconfig(wayland-client) >= 1
 BuildRequires:  pkgconfig(wayland-scanner) >= 1
 BuildRequires:  pkgconfig(wayland-server) >= 1
-}
-BuildRequires:  libvpx-devel
+%endif
+
 
 %description
 
