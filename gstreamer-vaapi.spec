@@ -1,16 +1,17 @@
-Name:           gstreamer1-vaapi
+Name:           gstreamer-vaapi
 Version:        0.5.9
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        GStreamer plugins to use VA API video acceleration
 
 License:        LGPLv2+
 URL:            https://gitorious.org/vaapi/gstreamer-vaapi/
 Source0:        http://www.freedesktop.org/software/vaapi/releases/gstreamer-vaapi/gstreamer-vaapi-%{version}.tar.bz2
 
+BuildRequires:  gcc
 BuildRequires:  glib2-devel >= 2.28
-BuildRequires:  gstreamer1-devel >= 1.0.0
-BuildRequires:  gstreamer1-plugins-base-devel >= 1.0.0
-BuildRequires:  gstreamer1-plugins-bad-free-devel >= 1.0.0
+BuildRequires:  gstreamer-devel >= 0.10.36
+BuildRequires:  gstreamer-plugins-base-devel >= 0.10.31
+BuildRequires:  gstreamer-plugins-bad-free-devel >= 0.10.22
 BuildRequires:  libva-devel >= 1.1.0
 BuildRequires:  libdrm-devel
 BuildRequires:  libudev-devel
@@ -24,6 +25,10 @@ BuildRequires:  pkgconfig(wayland-scanner) >= 1
 BuildRequires:  pkgconfig(wayland-server) >= 1
 %endif
 
+# We can't provide encoders or decoders unless we know what VA-API drivers
+# are on the system. Just filter them out, so they're not suggested by
+# PackageKit et al.
+%global __provides_exclude gstreamer0.10\\(decoder|gstreamer0.10\\(encoder
 
 %description
 
@@ -75,17 +80,20 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING.LIB NEWS README
-%{_libdir}/*.so.*
-%{_libdir}/gstreamer-1.0/*.so
+%{_libdir}/libgstvaapi*0.10.so.*
+%{_libdir}/gstreamer-0.10/libgstvaapi.so
 
 %files devel
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING.LIB NEWS README
-%{_includedir}/gstreamer-1.0/gst/vaapi
-%{_libdir}/*.so
-%{_libdir}/pkgconfig/gstreamer-vaapi*.pc
+%{_includedir}/gstreamer-0.10/gst/vaapi
+%{_libdir}/libgstvaapi*0.10.so
+%{_libdir}/pkgconfig/gstreamer-vaapi*0.10.pc
 
 %changelog
+* Thu Dec 19 2019 Dominik Mierzejewski <rpm@greysector.net> - 0.5.9-4
+- rebuilt for gstreamer-0.10
+
 * Tue Nov 04 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.5.9-3
 - Rebuilt for vaapi 0.36
 
