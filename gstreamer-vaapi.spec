@@ -65,27 +65,20 @@ chmod -x ./tests/test-filter.c ./gst-libs/gst/vaapi/gstvaapifilter.c ./gst-libs/
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags}
+%make_build V=1
 
 %install
-rm -rf $RPM_BUILD_ROOT
 %make_install
 
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
-
 %files
-%defattr(-,root,root,-)
-%doc AUTHORS COPYING.LIB NEWS README
+%license COPYING.LIB
+%doc AUTHORS NEWS README
 %{_libdir}/libgstvaapi*0.10.so.*
 %{_libdir}/gstreamer-0.10/libgstvaapi.so
 
 %files devel
-%defattr(-,root,root,-)
-%doc AUTHORS COPYING.LIB NEWS README
 %{_includedir}/gstreamer-0.10/gst/vaapi
 %{_libdir}/libgstvaapi*0.10.so
 %{_libdir}/pkgconfig/gstreamer-vaapi*0.10.pc
@@ -93,6 +86,7 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 %changelog
 * Thu Dec 19 2019 Dominik Mierzejewski <rpm@greysector.net> - 0.5.9-4
 - rebuilt for gstreamer-0.10
+- modernize spec file
 
 * Tue Nov 04 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.5.9-3
 - Rebuilt for vaapi 0.36
