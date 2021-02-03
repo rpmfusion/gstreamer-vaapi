@@ -1,6 +1,6 @@
 Name:           gstreamer-vaapi
 Version:        0.5.9
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        GStreamer plugins to use VA API video acceleration
 
 License:        LGPLv2+
@@ -84,6 +84,9 @@ find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 %{_libdir}/pkgconfig/gstreamer-vaapi*0.10.pc
 
 %changelog
+* Wed Feb 03 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.5.9-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Thu Dec 19 2019 Dominik Mierzejewski <rpm@greysector.net> - 0.5.9-4
 - rebuilt for gstreamer-0.10
 - modernize spec file
